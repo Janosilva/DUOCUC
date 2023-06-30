@@ -39,7 +39,7 @@ def mostrar_ubicaciones_disponibles():
   for repeticion in range(len(entradas_economicas)):
     if(entradas_economicas[repeticion]==""):
       print(repeticion+31, end=" ")
-      if repeticion >= 40:
+      if repeticion == 9:
         print(" ")
     else:
       print("X",end=" ")
