@@ -1,0 +1,170 @@
+from datetime import date, time, datetime
+
+entradas_platinum = [""] * 20
+entradas_gold = [""] * 30
+entradas_silver = [""] * 50
+asistentes = []
+ganancias_totales = 0
+cantidad_totales = 0
+ganancias_platinum = 0 
+ganancias_gold = 0
+ganancias_silver = 0
+cantidad_platinum = 0
+cantidad_gold = 0
+cantidad_silver = 0
+
+print("Bienvenido a Creativos.cl \n a continuacion ingrese su nombre y apellido \n")
+nombre = input("Nombre:  ")
+apellido = input("Apellido: ")
+
+def mostrar_menu():
+  print("\n Seleccione una opción \n")
+  print("------MENU------")
+  print("1) Comprar Entradas")
+  print("2) Mostrar Ubicaciones Disponibles")
+  print("3) Ver Listado Asistentes")
+  print("4) Mostrar Ganancias")
+  print("5) Salir")
+
+def mostrar_ubicaciones_disponibles():
+  print("\t ASIENTOS DISPONIBLES \n \n asientos 1-20: Platinum \n asientos 21-50: Gold \n asientos 51-100: Silver \n")
+  print( end="")
+  for repeticion in range(len(entradas_platinum)):
+    if(entradas_platinum[repeticion]==""):
+      print(repeticion+1, end=" ")
+      if repeticion == 9:
+        print("")
+    else:
+      print("X",end=" ")
+
+  print()
+
+  print( end="")
+  for repeticion in range(len(entradas_gold)):
+    if(entradas_gold[repeticion]==""):
+      print(repeticion+21, end=" ")
+      if repeticion == 19 or repeticion == 9:
+        print("")
+    else:
+      print("X",end=" ")
+
+  print()
+
+  print( end="")
+  for repeticion in range(len(entradas_silver)):
+    if(entradas_silver[repeticion]==""):
+      print(repeticion+51, end=" ")
+      if repeticion == 9 or repeticion == 19 or repeticion == 29 or repeticion == 39:
+        print(" ")
+    else:
+      print("X",end=" ")
+
+def comprar_entradas():
+  global ganancias_totales
+  global cantidad_totales
+  global ganancias_platinum  
+  global ganancias_gold 
+  global ganancias_silver 
+  global cantidad_platinum 
+  global cantidad_gold
+  global cantidad_silver 
+  
+  cantidad = int(input("Ingrese la cantidad de entradas a comprar (1 a 3 entradas)"))
+  if(cantidad <= 0 or cantidad >= 4):
+    print("solo puede comprar de 1 a 3 entradas, vuelva a ingresar ")
+    return
+
+
+  for repeticion in range(cantidad):
+    print("\n Ubicaciones disponibles: \n")
+    mostrar_ubicaciones_disponibles()
+    ubicacion_valida = False
+    while not ubicacion_valida:
+      ubicacion = int(input("\n Seleccione una ubicacion: "))
+      if ubicacion >= 1 and ubicacion <= 100:
+        if ubicacion <= 20 and entradas_platinum[ubicacion-1] == "":
+          entradas_platinum[ubicacion-1] = ingresar_rut()
+          ubicacion_valida = True
+          ganancias_totales = ganancias_totales + 120000
+          ganancias_platinum += 120000
+          cantidad_platinum +=1
+          cantidad_totales += 1
+          asistentes.append(entradas_platinum[ubicacion -1])
+
+        elif ubicacion <= 50 and entradas_gold[ubicacion-21] == "":
+          entradas_gold[ubicacion-21] = ingresar_rut()
+          ubicacion_valida = True
+          ganancias_totales = ganancias_totales + 80000
+          ganancias_gold += 80000
+          cantidad_gold += 1
+          cantidad_totales += 1
+          asistentes.append(entradas_gold[ubicacion -21])
+
+        elif ubicacion <= 100 and entradas_silver[ubicacion-51] == "":
+          entradas_silver[ubicacion-51] = ingresar_rut()
+          ubicacion_valida = True
+          ganancias_totales = ganancias_totales + 50000
+          ganancias_silver += 50000
+          cantidad_silver += 1
+          cantidad_totales += 1
+          asistentes.append(entradas_silver[ubicacion -51])  
+
+        if not ubicacion_valida:
+          print("No esta disponible")
+    print("\n Operación exitosa")
+
+
+def ingresar_rut():
+  run_valido = False
+  while not run_valido:
+    run = input("\n Ingrese el RUN sin digito verificador ni guión:")
+    if(len(run) == 7 or len(run) == 8):
+      run_valido = True
+
+  return run
+
+def fecha():
+  hoy = date.today()
+  orden_americano = hoy.strftime("%d/%m/%y")
+  return orden_americano
+def mostrar_asistentes():
+  print("Listado de asistentes")
+  asistentes.sort()
+  for asistente in asistentes:
+    print(asistente)
+def mostrar_ganancias():
+  print("   Tipo de entrada          Cantidad            Total ")
+  print(f"platinum $120.000              {cantidad_platinum}                  {ganancias_platinum}  ")
+  print(f"Gold $80.000                   {cantidad_gold}                  {ganancias_gold}    ")
+  print(f"Silver $50.000                 {cantidad_silver}                  {ganancias_silver}    ")
+  print(f"TOTAL                          {cantidad_totales}                  {ganancias_totales}")
+
+
+def inicio():
+  try:
+    while True:
+
+      mostrar_menu()
+      opcion = int(input("Ingrese opcion: "))
+      if opcion == 1:
+        print()
+        comprar_entradas()
+      elif opcion == 2:
+        print()
+        mostrar_ubicaciones_disponibles()
+      elif opcion == 3:
+        print()
+        mostrar_asistentes()
+      elif opcion == 4:
+        print()
+        mostrar_ganancias()
+      elif opcion == 5:
+        print()
+        print(f"Gracias por preferirnos, hasta luego {nombre} {apellido} Fecha: {fecha()}")
+        break
+  except:
+    print("Ha ocurrido un error y no me pagan lo suficiente para arreglarlo :)")
+
+
+
+inicio()
